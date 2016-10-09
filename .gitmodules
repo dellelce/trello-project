@@ -1,0 +1,4 @@
+[submodule "source/trellopy-personal"]
+	path = source/trellopy-personal
+	url = git@github.com:dellelce/trellopy.git
+	branch = master
