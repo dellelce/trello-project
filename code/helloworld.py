@@ -25,13 +25,13 @@ def main(args):
 
  f = open(fn)
 
- keyj = json.load(f)
-
- key = keyj['key']
+ conf = json.load(f)
+ key = conf['key']
+ user = conf['user']
 
  trello = TrelloApi(key)
 
- me = trello.members.get('antoniodellelce')
+ me = trello.members.get(user)
  print("Full name: " + me.get('fullName'))
  print("Boards: " + str(me.get('idBoards')))
  print("Organizations: " + str(me.get('idOrganizations')))
