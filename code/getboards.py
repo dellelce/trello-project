@@ -18,7 +18,7 @@ def main(args):
  confRoot=os.environ.get('TRELLO', None)
 
  if confRoot is not None:
-  fn = confRoot + os.sep + 'keys' + os.sep + 'default.json'
+  fn = confRoot + os.sep + 'conf' + os.sep + 'default.json'
  else:
   print('Environment is not set correctly')
   sys.exit(1)
@@ -27,8 +27,9 @@ def main(args):
  conf = json.load(f)
  key = conf['key']
  user = conf['user']
+ token = conf['token']
 
- trello = TrelloApi(key)
+ trello = TrelloApi(key, token)
 
  me = trello.members.get(user)
 
