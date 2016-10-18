@@ -22,6 +22,13 @@
  [ "$cnt" -eq 0 ] && export PYTHONPATH="$PYTHONPATH:$PYTRELLO"
 }
 
+trelloenv="$TRELLO/local-env/bin/activate"
+[ -f "$trelloenv" ] &&
+{
+ . "$trelloenv"
+}
+unset trelloenv
+
 ## MAIN ##
 
 echo " Trello Python === $(date) "
