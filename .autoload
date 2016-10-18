@@ -1,0 +1,31 @@
+#
+# Created:      181016
+# Description:  autoload file for trello
+#
+# vim:syntax=sh
+#
+
+## FUNCTIONS ##
+
+## ENV ##
+
+[ -z "$TRELLO" ] && export TRELLO="$PWD"
+[ -z "$PYTRELLO" ] && export PYTRELLO="$TRELLO/source/trellopy-personal"
+
+[ -z "$PYTHONPATH" ] &&
+{
+ export PYTHONPATH="$PYTHONPATH:$PYTRELLO"
+} ||
+{
+ cnt=$(echo $PYTHONPATH | grep -c "$PYTRELLO")
+
+ [ "$cnt" -eq 0 ] && export PYTHONPATH="$PYTHONPATH:$PYTRELLO"
+}
+
+## MAIN ##
+
+echo " Trello Python === $(date) "
+
+
+## EOF ##
+
