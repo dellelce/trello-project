@@ -36,6 +36,10 @@ def main(args):
  print("Boards: " + str(me.get('idBoards')))
  print("Organizations: " + str(me.get('idOrganizations')))
 
+ s = json.dumps(me, indent=4, sort_keys=True)
+ print(s)
+
+
 if __name__ == '__main__':
  import sys
  main(sys.argv)
