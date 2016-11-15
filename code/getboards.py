@@ -39,8 +39,10 @@ def main(args):
  s = json.dumps(b, indent=4, sort_keys=True)
  print(s)
 
- 
+ for i in b:
+  print(i['id'] + ' || ' + i['name'])
 
+#
 
 if __name__ == '__main__':
  import sys
