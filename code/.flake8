@@ -1,0 +1,5 @@
+
+[flake8]
+ignore=E111, # I indent by 2 or 1, what's wrong with that? It is my project...
+       E266, # It is not a regular comment but a marker and I use as many '#' is I prefer
+       D400, D401 # These don't help my mood

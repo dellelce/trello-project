@@ -1,21 +1,21 @@
-#!/usr/bin/env python3
+"""
+This is Hello World!
 
-'''
- File:         helloworld.py
- Created:      181016
- Description:  
-'''
+File:         helloworld.py
+Created:      181016
+"""
 
 from trello import TrelloApi
 import os
 import json
 
+
 #
 # main function
 #
-
 def main(args):
- confRoot=os.environ.get('TRELLO', None)
+ """This is the main function"""
+ confRoot = os.environ.get('TRELLO', None)
 
  if confRoot is not None:
   fn = confRoot + os.sep + 'conf' + os.sep + 'default.json'
@@ -23,12 +23,11 @@ def main(args):
   print('Environment is not set correctly')
   sys.exit(1)
 
- f = open(fn)
-
- conf = json.load(f)
- key = conf.get('key')
- user = conf.get('user')
- token = conf.get('token')
+ with open(fn) as f:
+  conf = json.load(f)
+  key = conf.get('key')
+  user = conf.get('user')
+  token = conf.get('token')
 
  trello = TrelloApi(key, token)
 
