@@ -76,27 +76,9 @@ def trello_auth():
 
  return (key, user, token)
 
+def process_cards(trello, list_id):
 
-#
-# main function
-#
-def main(args):
- """Does the main function need a docstring?!!?!"""
-
- key, user, token = trello_auth()
- trello = TrelloApi(key, token)
- #me = trello.members.get(user)
- #id = me.get('id')
- #b = trello.members.get_board(id)
-
- places_id ='5b73504305869468a980efe2'
- #places = trello.boards.get_list(places_id)
-
- places_email='5b73504cefcdbf883ec4bb94'
-
- email_cards = trello.lists.get_card(places_email)
-
- for i in email_cards:
+ for i in list_id:
    title = i['name']
    id_card = i['id']
    create_time = datetime.fromtimestamp(int(id_card[0:8],16))
@@ -116,12 +98,32 @@ def main(args):
      up = trello.cards.update(id_card, name=title)
 
    body = i['desc']
-   changes = 0
+   lchanges = 0
 
-   changes, newbody = check_body(body)
+   lchanges, newbody = check_body(body)
 
-   if changes != 0:
-     print(newbody)
+   if lchanges != 0:
+     print('Updating description to commit {} changes'.format(lchanges));
+     up = trello.cards.update(id_card, desc=newbody)
+
+#
+# main function
+#
+def main(args):
+ """Does the main function need a docstring?!!?!"""
+
+ key, user, token = trello_auth()
+ trello = TrelloApi(key, token)
+ #me = trello.members.get(user)
+ #id = me.get('id')
+ #b = trello.members.get_board(id)
+ places_id ='5b73504305869468a980efe2'
+ #places = trello.boards.get_list(places_id)
+ places_email='5b73504cefcdbf883ec4bb94'
+
+ email_cards = trello.lists.get_card(places_email)
+ process_cards(trello, email_cards)
+
 
 #
 if __name__ == '__main__':
