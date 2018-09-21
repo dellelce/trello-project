@@ -1,9 +1,9 @@
 
 """
-Test program to test api.
+Clean up tool for all Google Alerts cards
 
-File:         getboards.py
-Created:      181016
+File:         googlealerts.py
+Created:      210918
 """
 
 from trello import TrelloApi
@@ -66,7 +66,7 @@ def trello_auth():
   fn = confRoot + os.sep + 'conf' + os.sep + 'default.json'
  else:
   print('Environment is not set correctly')
-  sys.exit(1)
+  return None
 
  with open(fn) as f:
   conf = json.load(f)
@@ -76,7 +76,9 @@ def trello_auth():
 
  return (key, user, token)
 
+
 def process_cards(trello, list_id):
+ '''process cards for given list'''
 
  for i in list_id:
    title = i['name']
@@ -110,24 +112,34 @@ def process_cards(trello, list_id):
 # main function
 #
 def main(args):
- """Does the main function need a docstring?!!?!"""
 
- key, user, token = trello_auth()
+ try:
+   key, user, token = trello_auth()
+ except:
+   return 1
+
  trello = TrelloApi(key, token)
- #me = trello.members.get(user)
- #id = me.get('id')
- #b = trello.members.get_board(id)
- places_id ='5b73504305869468a980efe2'
- #places = trello.boards.get_list(places_id)
- places_email='5b73504cefcdbf883ec4bb94'
+ me = trello.members.get(user)
+ user_id = me.get('id')
+ boards = trello.members.get_board(user_id)
 
- email_cards = trello.lists.get_card(places_email)
- process_cards(trello, email_cards)
+ for board in boards:
+   board_id = board['id']
+   board_name = board['name']
+
+   trello_list = trello.boards.get_list(board_id)
+
+   for tl_item in trello_list:
+     if 'email' in tl_item['name']:
+       print('{} {}'.format(board_name[:30], tl_item['name']))
+
+       cards = trello.lists.get_card(tl_item['id'])
+       process_cards(trello, cards)
 
 
 #
 if __name__ == '__main__':
- import sys
- main(sys.argv)
+  import sys
+  main(sys.argv)
 
 ## EOF ##
