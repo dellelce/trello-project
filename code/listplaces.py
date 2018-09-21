@@ -45,7 +45,7 @@ def check_body(body):
      changes += 1
      continue
 
-    # keep all other lines (google urls to be modified though...)
+    # keep all other lines (google urls will be modified though...)
     newbody.append(line)
 
    if state == 1:
@@ -53,7 +53,7 @@ def check_body(body):
     if line == '':
      state = 0
 
-    # all other lines are just!
+    # all other lines are just fine!
     changes += 1
 
   return (changes, '\n'.join(newbody))
