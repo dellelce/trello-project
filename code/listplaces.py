@@ -22,7 +22,42 @@ def mytimeformat(ds):
 
 def check_body(body):
   '''check if body needs reformatting'''
-  return None
+  _body = body.splitlines()
+  newbody = []
+  state = 0
+  changes = 0
+
+  for line in _body:
+
+   if state == 0:
+    if 'Unsubscribe from this Google Alert:' in line:
+     state = 1
+     changes += 1
+     continue
+
+    if 'Create another Google Alert:' in line:
+     state = 1
+     changes += 1
+     continue
+
+    if 'Sign in to manage your alerts:' in line:
+     state = 1
+     changes += 1
+     continue
+
+    # keep all other lines (google urls to be modified though...)
+    newbody.append(line)
+
+   if state == 1:
+    # empty lines = change of state
+    if line == '':
+     state = 0
+
+    # all other lines are just!
+    changes += 1
+
+  return (changes, '\n'.join(newbody))
+
 
 def trello_auth():
  confRoot = os.environ.get('TRELLO', None)
@@ -62,31 +97,31 @@ def main(args):
  email_cards = trello.lists.get_card(places_email)
 
  for i in email_cards:
-  title = i['name']
-  id_card = i['id']
-  create_time = datetime.fromtimestamp(int(id_card[0:8],16))
+   title = i['name']
+   id_card = i['id']
+   create_time = datetime.fromtimestamp(int(id_card[0:8],16))
 
-  if 'Google Alert' not in title:
-    continue
+   # only Google Alert cards are managed by this code
+   if 'Google Alert' not in title:
+     continue
 
-  print("{} || {} || {}".format(id_card, create_time, title)) 
+   print("{} || {} || {}".format(id_card, create_time, title))
 
-  newtime = mytimeformat(create_time)
+   newtime = mytimeformat(create_time)
 
-  if newtime not in title:
-    title = '{} {}'.format(title, newtime)
-    print('New title: ' + title)
+   if newtime not in title:
+     title = '{} {}'.format(title, newtime)
+     print('New title: ' + title)
 
-    up = trello.cards.update(id_card, name=title)
+     up = trello.cards.update(id_card, name=title)
 
-'''
-  if 'Google Alert' in title:
    body = i['desc']
+   changes = 0
 
-   body_a = body.splitlines()
-   p(body_a)
-'''
+   changes, newbody = check_body(body)
 
+   if changes != 0:
+     print(newbody)
 
 #
 if __name__ == '__main__':
