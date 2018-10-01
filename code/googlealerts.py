@@ -45,6 +45,11 @@ def check_body(body):
      changes += 1
      continue
 
+    if '- - - - - - - - - - - -' in line:
+     state = 1
+     changes += 1
+     continue
+
     # keep all other lines (google urls will be modified though...)
     newbody.append(line)
 
