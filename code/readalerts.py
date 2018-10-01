@@ -20,45 +20,6 @@ def mytimeformat(ds):
   return '{:0>2}{:0>2}{}'.format(ds.day, ds.month, str(ds.year)[2:4])
 
 
-def check_body(body):
-  '''Check if body needs reformatting'''
-  _body = body.splitlines()
-  newbody = []
-  state = 0
-  changes = 0
-
-  for line in _body:
-
-   if state == 0:
-    if 'Unsubscribe from this Google Alert:' in line:
-     state = 1
-     changes += 1
-     continue
-
-    if 'Create another Google Alert:' in line:
-     state = 1
-     changes += 1
-     continue
-
-    if 'Sign in to manage your alerts:' in line:
-     state = 1
-     changes += 1
-     continue
-
-    # keep all other lines (google urls will be modified though...)
-    newbody.append(line)
-
-   if state == 1:
-    # empty lines = change of state
-    if line == '':
-     state = 0
-
-    # all other lines are just fine!
-    changes += 1
-
-  return (changes, '\n'.join(newbody))
-
-
 def trello_auth():
  """Collect trello auth details & configuration"""
 
