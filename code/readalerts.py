@@ -41,7 +41,10 @@ def trello_auth():
 
 
 def read_cards(trello, list_id):
- """Cards for given list."""
+ """Cards for given list.
+    TODO: return dictionary
+          pass filter as a function/callable
+ """
 
  for i in list_id:
    title = i['name']
